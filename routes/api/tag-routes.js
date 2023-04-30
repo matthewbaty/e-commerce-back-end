@@ -45,19 +45,28 @@ router.get('/:id', (req, res) => {
       }
     ]
   })
-  .then(dbTagData => res.json(dbTagData))
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  });
+    .then(dbTagData => res.json(dbTagData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 router.post('/', (req, res) => {
   // create a new tag
+  Tag.create({
+    tag_name: req.body.tag_name
+  })
+    .then((tagData) => res.json(tagData))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  
 });
 
 router.delete('/:id', (req, res) => {
