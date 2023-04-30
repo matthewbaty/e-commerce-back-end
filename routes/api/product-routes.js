@@ -69,24 +69,28 @@ router.get('/:id', (req, res) => {
       }
     ]
   })
-  .then(productData => {
-    if (!productData) {
-      res.status(404).json({ message: 'Product with this ID does not exist' });
-      return;
-    }
-    res.json(productData);
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  })
+    .then(productData => {
+      if (!productData) {
+        res.status(404).json({ message: 'Product with this ID does not exist' });
+        return;
+      }
+      res.json(productData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    })
 });
 
 // create new product
 router.post('/', (req, res) => {
 
-  Product.create
-  Product.create(req.body)
+  Product.create({
+    product_name: req.body.product_name,
+    price: req.body.price,
+    stock: req.body.stock,
+    tagIds: req.body.tag_id
+  })
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
@@ -152,6 +156,22 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
+  Product.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(productData => {
+    if (!productData) {
+      res.status(404).json({ message: 'Product with this ID does not exist' });
+      return;
+    }
+    res.json(productData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  })
 });
 
 module.exports = router;
