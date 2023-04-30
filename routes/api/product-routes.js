@@ -69,18 +69,23 @@ router.get('/:id', (req, res) => {
       }
     ]
   })
+  .then(productData => {
+    if (!productData) {
+      res.status(404).json({ message: 'Product with this ID does not exist' });
+      return;
+    }
+    res.json(productData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  })
 });
 
 // create new product
 router.post('/', (req, res) => {
-  /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
-    }
-  */
+
+  Product.create
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
