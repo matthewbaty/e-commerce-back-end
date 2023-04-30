@@ -66,11 +66,27 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
-  
+  Tag.update(req.body, {
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(tagData => {
+    if (!tagData) {
+      res.status(404).json({message: 'Tag with this ID does not exist'});
+      return;
+    }
+    res.json(tagData);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
 
 router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
+  
 });
 
 module.exports = router;
